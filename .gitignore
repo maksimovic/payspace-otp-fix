@@ -1,0 +1,10 @@
+# Build output / packages
+web-ext-artifacts/
+*.zip
+*.xpi
+
+# Tooling
+node_modules/
+
+# macOS
+.DS_Store

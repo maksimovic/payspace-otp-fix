@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OTP boxes — local test</title>
+  <link rel="stylesheet" href="otp-enhance.css" />
+  <style>
+    body { font: 16px/1.5 system-ui, sans-serif; max-width: 26rem; margin: 3rem auto; padding: 0 1rem; color: #1c2333; }
+    .card { border: 1px solid #e4e7ec; border-radius: 12px; padding: 1.5rem; }
+    label { font-weight: 600; display: block; margin-bottom: .5rem; }
+    .muted { text-align: center; color: #475467; font-size: .9rem; }
+    .readout { margin-top: 1rem; font: 13px ui-monospace, monospace; color: #475467; }
+    .readout b { color: #1c2333; }
+    input[type="submit"] { margin-top: 1rem; width: 100%; padding: .6rem 1rem; border-radius: 8px; border: 1px solid #c4c9d4; background: #2f6feb; color: #fff; font-weight: 600; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <p>Mirrors the live <code>/mfa/signin</code> markup (wrapper <code>div#oneTimePassword</code> + <code>input#OneTimePassword</code>, no maxlength). Type six digits or paste <code>123456</code> into the first box — it fills all boxes and auto-submits, like GitHub.</p>
+
+    <form id="f">
+      <label for="OneTimePassword">One-time password</label>
+      <div class="form-group" id="oneTimePassword">
+        <input id="OneTimePassword" name="OneTimePassword" type="password"
+               placeholder="One Time Password" autocomplete="one-time-code"
+               data-val="true" data-val-required="The One Time Password field is required." />
+        <span class="field-validation-valid" data-valmsg-for="OneTimePassword" data-valmsg-replace="true"></span>
+      </div>
+      <div class="muted">An OTP has been sent to the number ending in **22</div>
+      <input type="submit" value="Login" />
+    </form>
+
+    <div class="readout">
+      original field value: <b id="val">(empty)</b><br />
+      submit count: <b id="count">0</b> &nbsp; last submitted value: <b id="sub">—</b>
+    </div>
+  </div>
+
+  <script src="otp-enhance.js"></script>
+  <script>
+    var orig = document.getElementById('OneTimePassword');
+    var val = document.getElementById('val');
+    var count = document.getElementById('count');
+    var sub = document.getElementById('sub');
+    var n = 0;
+    orig.addEventListener('input', function () { val.textContent = orig.value || '(empty)'; });
+    document.getElementById('f').addEventListener('submit', function (e) {
+      e.preventDefault(); // so the local page doesn't navigate while testing
+      n += 1;
+      count.textContent = String(n);
+      sub.textContent = orig.value || '(empty)';
+    });
+  </script>
+</body>
+</html>
